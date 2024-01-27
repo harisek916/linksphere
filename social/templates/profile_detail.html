@@ -16,7 +16,9 @@
                 <div class="col-lg-6">
                     <div class="about-text go-to">
                         <h3 class="dark-color">{{data}}</h3>
-                        <a class="text-decoration-none btn" href="{%url 'profile-update' request.user.profile.id%}">Edit profile</a>
+                        {%if data.user == request.user%}
+                            <a class="text-decoration-none btn" href="{%url 'profile-update' request.user.profile.id%}">Edit profile</a>
+                        {%endif%}
                         <p>Bio: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis impedit, odit perferendis natus sapiente fugiat adipisci, rerum nihil aliquam beatae unde voluptas labore. Quaerat dicta, commodi assumenda iste ea ipsam.</p>
                         <div class="row about-list">
                             <div class="col-md-6">
@@ -25,12 +27,12 @@
                                     <p>{{data.dob}}</p>
                                 </div>
                                 <div class="media">
-                                    <label>{{data.phone}}</label>
-                                    <p>11111111111</p>
+                                    <label>phone</label>
+                                    <p>{{data.phone}}</p>
                                 </div>
                                 <div class="media">
                                     <label>Address</label>
-                                    <p>{{data.Address}}</p>
+                                    <p>{{data.address}}</p>
                                 </div>
                             </div>
                             <div class="col-md-6">

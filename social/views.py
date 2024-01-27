@@ -52,8 +52,6 @@ class SignOutView(View):
         logout(request)
         return redirect("signin")
     
-
-
 # localhost:8000/profiles/<int:pk>/change/
 
 class ProfileUpdateView(UpdateView):
@@ -64,11 +62,16 @@ class ProfileUpdateView(UpdateView):
     def get_success_url(self):
         return reverse("index")
     
-# localhost:8000/profiles/<int:pk>
-    
 class ProfileDetailView(DetailView):
     template_name="profile_detail.html"
     model=UserProfile
     context_object_name="data"
+
+
+class ProfileListView(View):
+    def get(self,request,*args,**kwargs):
+        qs=UserProfile.objects.all()
+        return render(request,"profile_list.html",{"data":qs})
+    
 
 
