@@ -6,6 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>index view</h1>
+    {%if request.user.profile%}
+        <a href="{%url 'profile-update' request.user.profile.id%}">add profile</a>
+        <a href="{%url 'profile-detail' request.user.profile.id%}">View Profile</a>
+    {%endif%}
 </body>
 </html>

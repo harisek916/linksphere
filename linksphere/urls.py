@@ -20,10 +20,14 @@ from social import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("register",views.SignUpView.as_view(),name="signup"),
     path("login",views.SignInView.as_view(),name="signin"),
     path("index",views.IndexView.as_view(),name="index"),
     path("logout",views.SignOutView.as_view(),name="signout"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("profiles/<int:pk>/change",views.ProfileUpdateView.as_view(),name="profile-update"),
+    path("profiles/<int:pk>",views.ProfileDetailView.as_view(),name="profile-detail"),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
