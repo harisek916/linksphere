@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 # from social app
-from social.models import UserProfile
+from social.models import UserProfile,Posts
 
 
 class RegistrationForm(UserCreationForm):
@@ -28,3 +28,9 @@ class UserProfileForm(forms.ModelForm):
         }
 
         
+class PostForm(forms.ModelForm):
+    class Meta:
+        model=Posts
+        fields=["title","post_image"]
+
+

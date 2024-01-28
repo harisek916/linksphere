@@ -31,5 +31,5 @@ urlpatterns = [
     path("profiles/<int:pk>/change",views.ProfileUpdateView.as_view(),name="profile-update"),
     path("profiles/<int:pk>",views.ProfileDetailView.as_view(),name="profile-detail"),
     path("profiles/all",views.ProfileListView.as_view(),name="profile-list"),
-    
+    path("profiles/<int:pk>/follow",views.FollowView.as_view(),name="follow"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

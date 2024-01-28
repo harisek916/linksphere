@@ -43,12 +43,18 @@ background: linear-gradient(to right, #FF4B2B, #FF416C);">
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
                        <span class="fw-bold text-primary"> {{profile.following.count}}</span> followings
-                       <span class="fw-bold text-info">  {{profile.followed_by.count}}</span> followers </li>
-                     
+                       <span class="fw-bold text-info">  {{profile.followed_by.count}}</span> followers 
+                      </li>
                     </ul>
                     <div class="card-body">
-                      <a href="#" class="card-link">follow</a>
-                      <a href="#" class="card-link">unfollow</a>
+                      <form action="{%url 'follow' profile.id%}" method="post">
+                        {%csrf_token%}
+                        {%if profile in request.user.profile.following.all %}
+                            <button type="submit" name="action" value="unfollow">unfollow</button>
+                        {%else%}
+                            <button type="submit" name="action" value="follow">follow</button>
+                        {%endif%}
+                      </form>
                     </div>
                   </div>
             </div>

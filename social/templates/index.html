@@ -12,5 +12,13 @@
         <a href="{%url 'profile-detail' request.user.profile.id%}">View Profile</a>
         <a href="{%url 'profile-list' %}">all profiles</a>
     {%endif%}
+
+    <div class="container">
+        <form action="" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            {{form.as_p}}
+            <button type="submit">Add</button>
+        </form>
+    </div>
 </body>
 </html>

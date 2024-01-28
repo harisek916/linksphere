@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.views.generic import View
 from django.views.generic import FormView,CreateView,TemplateView,UpdateView,DetailView
 # import from social app
-from social.forms import RegistrationForm,LoginForm,UserProfileForm
+from social.forms import RegistrationForm,LoginForm,UserProfileForm,PostForm
 from social.models import UserProfile
 
 # Create your views here.
@@ -44,8 +44,12 @@ class SignInView(FormView):
         print("error in login")
         return render(request,"login.html",{"form":form})
 
-class IndexView(TemplateView):
+class IndexView(CreateView):
     template_name="index.html"
+    form_class=PostForm
+
+    def get_success_url(self):
+        return reverse("index")
 
 class SignOutView(View):
     def get(self,request,*args,**kwargs):
@@ -70,8 +74,24 @@ class ProfileDetailView(DetailView):
 
 class ProfileListView(View):
     def get(self,request,*args,**kwargs):
-        qs=UserProfile.objects.all()
+        qs=UserProfile.objects.all().exclude(user=request.user)
         return render(request,"profile_list.html",{"data":qs})
     
+
+# localhost:8000/profiles/<int:pk>/follow
+
+class FollowView(View):
+    def post(self,request,*args,**kwargs):
+        id=kwargs.get("pk")
+        profile_object=UserProfile.objects.get(id=id)
+        action=request.POST.get("action")
+        if action == "follow":
+            request.user.profile.following.add(profile_object)
+        elif action == "unfollow":
+            request.user.profile.following.remove(profile_object)
+        return redirect("index")
+
+
+
 
 
