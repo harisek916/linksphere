@@ -1,24 +1,191 @@
 <!DOCTYPE html>
+{%load static%}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>link sphere</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="{%static 'social/css/index.css'%}">
 </head>
 <body>
-    welcome {{request.user}}
-    {%if request.user.profile%}
-        <a href="{%url 'profile-update' request.user.profile.id%}">add profile</a>
-        <a href="{%url 'profile-detail' request.user.profile.id%}">View Profile</a>
-        <a href="{%url 'profile-list' %}">all profiles</a>
-    {%endif%}
+    <!-- nav starts -->
+    <nav class="navbar fixed-top  p-0" style="	background: #FF416C;
+	background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
+	background: linear-gradient(to right, #FF4B2B, #FF416C);" >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="{%static 'social/images/linkspherena.png'%}" alt="Logo" width="100" height="h-auto" class="ms-5">
+          </a>
 
-    <div class="container">
+          <!-- search start -->
+            <div class="container mt-3 w-50 mb-2">
+                <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-danger rounded-start-0" type="submit">Search</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+        <!-- search end -->
+
+            <a href="post_form.html"><i class="fa-regular fa-square-plus me-4 fs-3 text-white opacity-75"></i></a>
+
+        <!-- profile dropdown start -->
+
+        <div class="dropdown nav-item mr-lg-4" style="margin-right: 6em;">
+            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">
+
+                {%if request.user.profile.profile_pic%}
+                    <img class="profile-small" src="{{request.user.profile.profile_pic.url}}" alt="Avatar">
+
+                {%else%}
+                    <img class="profile-small" src="{%static 'social/images/profilepic.png'%}" alt="Avatar">
+
+                {%endif%}
+                <!-- <b class="caret"></b> -->
+            </a>
+            <ul class="dropdown-menu p-2" role="menu">
+                <li class="nav-item">
+                    <a href="#blog" class="nav-link scroll">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile_edit.html" class="nav-link scroll">Edit profile</a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li class="nav-item">
+                    <a href="{%url 'signout' %}" class="nav-link scroll">Logout</a>
+                </li>
+            </ul>
+        </div>
+                    <!-- profile dropdown end -->
+
+
+    </nav>
+    <!-- nav ends -->
+
+    {%if form.errors%}
+        {{form.errors}}
+    {%endif%}
+    <div class="container d-flex flex-column justify-content-center align-items-center mt-5">
+
         <form action="" method="post" enctype="multipart/form-data">
-            {%csrf_token%}
-            {{form.as_p}}
-            <button type="submit">Add</button>
+            <div class="container rounded-pill post p-2 mt-3 d-flex justify-content-evenly">
+                {%csrf_token%}
+                <div class="">
+
+                {%if request.user.profile.profile_pic%}
+                    <img class="profile-small" src="{{request.user.profile.profile_pic.url}}" alt="Avatar">
+
+                {%else%}
+                    <img class="profile-small" src="{%static 'social/images/profilepic.png'%}" alt="Avatar">
+
+                {%endif%}
+                    
+                </div>
+                <div class="">
+                    <input class="load" name="post_image" type="file" id="file" accept="image/*">
+                    <label class="upload d-flex justify-content-center align-items-center" style="width: 60px;" for="file"><img src="{%static 'social/images/upload.png'%}" style="width: 30px;" alt=""></label>
+                </div>                    
+                <!-- <img class="profile-small ms-3 me-3" src="{%static 'social/images/profilepic.png'%}" alt=""> -->
+
+                <div class="">
+                    <input class="form-control rounded-pill" type="text" name="title" id="" placeholder="captions...">
+                </div>
+                <div class="">
+                    <button class="btn btn-primary" type="submit">Post</button>
+                </div>
+            </div>
         </form>
+
+        <!-- post section start -->
+        {%for post in data%}
+        <div class="border border-1 rounded-4 mt-4 w-50">
+            <div class="ms-2 mt-2 mb-2">
+                {%if post.user.profile.profile_pic%}
+                    <img class="profile-small" src="{{post.user.profile.profile_pic.url}}" alt="Avatar">
+                {%else%}
+                    <img class="profile-small" src="{%static 'social/images/profilepic.png' %}" alt="Avatar">
+                {%endif%}
+                {{post.user}}, {{post.created_date}}
+            </div>
+            <div>   
+                {%if post.post_image%}
+                <img src="{{post.post_image.url}}" class="h-auto w-100" alt="">
+                {%endif%}
+                {{post.title}}
+            </div>
+            <div class="ms-2 mt-2 mb-2 d-flex align-items-start">
+                <form action="{%url 'like' post.id%}" method="post" class="d-flex">
+                    {%csrf_token%}
+                    <div class="d-block flex-column">
+                        <div>
+                            <button type="submit" class="btn" name="action" value="like">
+                                <i class="fa-solid fa-heart fs-4 text-danger btn"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <span class="ms-2 spa">{{post.liked_by.all.count}} Likes</span>
+                        </div>
+                    </div>
+                    <div class="d-block flex-column">
+                        <div>
+                            <button type="submit" class="btn" name="action" value="dislike">
+                                <i class="fa-solid fa-heart-crack fs-4 text-danger btn"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <span class="ms-2 spa">Dislike</span>
+                        </div>
+                    </div>
+                </form>
+                <div class="d-block flex-column">
+                    <div>
+                        <i class="fa-solid fa-comment-dots fs-4 text-secondary btn"></i>
+                    </div>
+                    <div>
+                        <span class="ms-2 spa">comment</span>
+                    </div>
+                </div>
+                <div class="d-block flex-column">
+                    <div>
+                        <i class="fa-solid fa-location-arrow fs-4 btn"></i>
+                    </div>
+                </div>
+
+            </div>
+            <hr class="ms-3 me-3">
+            
+            <div class="p-2 ms-2">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis, distinctio non? Consectetur ab consequuntur, rem, omnis quam aperiam ipsam nam inventore dolorum aspernatur error perferendis neque quos est voluptas quas.
+            </div>
+            <div class="d-flex align-items-center mb-4 p-3">
+                <div>
+                    <img class="profile-xsmall" src="images/profilepic.png" alt="">
+                </div>
+                <div class="ms-2 comment form-control rounded-end-0 border-0">
+                    <input type="text" name="" id="" placeholder="Message .........." class="border-0 w-100">
+                </div>
+                <div>
+                    <button class="btn btn-secondary rounded-start-0">Post</button>
+                </div>
+            </div>
+        </div>
+
+        {%endfor%}
+
+        
+        <!-- post section end -->
     </div>
 </body>
 </html>
