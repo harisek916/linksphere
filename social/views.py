@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.views.generic import View
 from django.views.generic import FormView,CreateView,TemplateView,UpdateView,DetailView,ListView
 # import from social app
-from social.forms import RegistrationForm,LoginForm,UserProfileForm,PostForm
+from social.forms import RegistrationForm,LoginForm,UserProfileForm,PostForm,CommentForm
 from social.models import UserProfile,Posts
 
 # Create your views here.
@@ -111,4 +111,20 @@ class PostLikeView(View):
             post_object.liked_by.remove(request.user)
         return redirect("index")
 
+
+
+class CommentView(CreateView):
+    template_name="index.html"
+    form_class=CommentForm
+
+    def get_success_url(self):
+        return reverse("index")
+
+    def form_valid(self,form):
+        id=self.kwargs.get("pk")
+        post_object=Posts.objects.get(id=id)
+        form.instance.user=self.request.user
+        form.instance.post=post_object
+        return super().form_valid(form)
+    
 

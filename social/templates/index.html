@@ -126,27 +126,28 @@
                 {{post.title}}
             </div>
             <div class="ms-2 mt-2 mb-2 d-flex align-items-start">
-                <form action="{%url 'like' post.id%}" method="post" class="d-flex">
+                <form action="{%url 'like' post.id%}" method="post" class="">
                     {%csrf_token%}
-                    <div class="d-block flex-column">
-                        <div>
-                            <button type="submit" class="btn" name="action" value="like">
-                                <i class="fa-solid fa-heart fs-4 text-danger btn"></i>
-                            </button>
+                    {%if request.user in post.liked_by.all%}
+                        <div class="d-block flex-column">
+                            <div>
+                                <button type="submit" class="btn" name="action" value="dislike">
+                                    <i class="fa-solid fa-heart-crack fs-4 text-danger btn"></i>
+                                </button>
+                            </div>
+                            
                         </div>
-                        <div>
-                            <span class="ms-2 spa">{{post.liked_by.all.count}} Likes</span>
+                    {%else%}
+                        <div class="d-block flex-column">
+                            <div>
+                                <button type="submit" class="btn" name="action" value="like">
+                                    <i class="fa-solid fa-heart fs-4 text-danger btn"></i>
+                                </button>
+                            </div>    
                         </div>
-                    </div>
-                    <div class="d-block flex-column">
-                        <div>
-                            <button type="submit" class="btn" name="action" value="dislike">
-                                <i class="fa-solid fa-heart-crack fs-4 text-danger btn"></i>
-                            </button>
-                        </div>
-                        <div>
-                            <span class="ms-2 spa">Dislike</span>
-                        </div>
+                    {%endif%}
+                    <div>   
+                        <span class="ms-2 spa">{{post.liked_by.all.count}} Likes</span>
                     </div>
                 </form>
                 <div class="d-block flex-column">
@@ -154,7 +155,7 @@
                         <i class="fa-solid fa-comment-dots fs-4 text-secondary btn"></i>
                     </div>
                     <div>
-                        <span class="ms-2 spa">comment</span>
+                        <span class="ms-2 spa">comment {{post.post_comments.all.count}}</span>
                     </div>
                 </div>
                 <div class="d-block flex-column">
@@ -166,22 +167,31 @@
             </div>
             <hr class="ms-3 me-3">
             
-            <div class="p-2 ms-2">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis, distinctio non? Consectetur ab consequuntur, rem, omnis quam aperiam ipsam nam inventore dolorum aspernatur error perferendis neque quos est voluptas quas.
-            </div>
-            <div class="d-flex align-items-center mb-4 p-3">
+            {%for c in post.post_comments.all%}
+            <div class="p-2 ms-2 d-flex">
                 <div>
-                    <img class="profile-xsmall" src="images/profilepic.png" alt="">
-                </div>
+                    {%if c.user.profile.profile_pic%}
+                        <img class="profile-xsmall" src="{{c.user.profile.profile_pic.url}}" alt="">
+                    {%endif%}
+                </div> 
                 <div class="ms-2 comment form-control rounded-end-0 border-0">
-                    <input type="text" name="" id="" placeholder="Message .........." class="border-0 w-100">
+                    <input type="text" name="" value="{{c.text}}" disabled id="" placeholder="Message .........." class="border-0 w-100">
                 </div>
-                <div>
-                    <button class="btn btn-secondary rounded-start-0">Post</button>
-                </div>
+            </div>
+            {%endfor%}
+            <div class=" mb-4 p-3">
+
+                <form action="{%url 'comment' post.id %}" method="post" class="d-flex">
+                    {%csrf_token%}
+                    <div class="ms-2 comment form-control rounded-end-0 border-0">
+                        <input type="text" name="text" id="" placeholder="Message .........." class="border-0 w-100">
+                    </div>                 
+                    <div>
+                        <button class="btn btn-secondary rounded-start-0" type="submit">Post</button>
+                    </div>
+                </form>
             </div>
         </div>
-
         {%endfor%}
 
         

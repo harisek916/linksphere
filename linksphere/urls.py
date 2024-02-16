@@ -25,7 +25,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("register",views.SignUpView.as_view(),name="signup"),
-    path("login",views.SignInView.as_view(),name="signin"),
+    path("",views.SignInView.as_view(),name="signin"),
     path("index",views.IndexView.as_view(),name="index"),
     path("logout",views.SignOutView.as_view(),name="signout"),
     path("profiles/<int:pk>/change",views.ProfileUpdateView.as_view(),name="profile-update"),
@@ -33,6 +33,7 @@ urlpatterns = [
     path("profiles/all",views.ProfileListView.as_view(),name="profile-list"),
     path("profiles/<int:pk>/follow",views.FollowView.as_view(),name="follow"),
     path("post/<int:pk>/like",views.PostLikeView.as_view(),name="like"),
+    path("post/<int:pk>/comment/add",views.CommentView.as_view(),name="comment"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
