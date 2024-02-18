@@ -57,10 +57,10 @@
             </a>
             <ul class="dropdown-menu p-2" role="menu">
                 <li class="nav-item">
-                    <a href="#blog" class="nav-link scroll">Profile</a>
+                    <a href="{%url 'profile-detail' request.user.profile.id%}" class="nav-link scroll">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a href="profile_edit.html" class="nav-link scroll">Edit profile</a>
+                    <a href="{%url 'profile-update' request.user.profile.id%}" class="nav-link scroll">Edit profile</a>
                 </li>
                 <div class="dropdown-divider"></div>
                 <li class="nav-item">

@@ -56,6 +56,11 @@ class IndexView(CreateView,ListView):
         
     def get_success_url(self):
         return reverse("index")
+    
+    def get_queryset(self):
+        blocked_profiles=self.request.user.profile.block.all()
+        qs=Posts.objects.all().exclude(user__id__in=blocked_profiles).order_by("-created_date")
+        return qs
 
 class SignOutView(View):
     def get(self,request,*args,**kwargs):
@@ -83,7 +88,6 @@ class ProfileListView(View):
         qs=UserProfile.objects.all().exclude(user=request.user)
         return render(request,"profile_list.html",{"data":qs})
     
-
 # localhost:8000/profiles/<int:pk>/follow
 
 class FollowView(View):
@@ -97,7 +101,6 @@ class FollowView(View):
             request.user.profile.following.remove(profile_object)
         return redirect("index")
 
-
 # localhost:8000/posts/<int:pk>/like
     
 class PostLikeView(View):
@@ -110,8 +113,6 @@ class PostLikeView(View):
         elif action == "dislike":
             post_object.liked_by.remove(request.user)
         return redirect("index")
-
-
 
 class CommentView(CreateView):
     template_name="index.html"
@@ -127,4 +128,19 @@ class CommentView(CreateView):
         form.instance.post=post_object
         return super().form_valid(form)
     
+
+# BlockView
+
+# localhost:8000/profiles/<int:pk>/block
+    
+class ProfileBlockView(View):
+    def post(self,request,*args,**kwargs):
+        id=kwargs.get("pk")
+        profile_object=UserProfile.objects.get(id=id)
+        action=request.POST.get("action")
+        if action == "block":
+            request.user.profile.block.add(profile_object)
+        elif action == "unblock":
+            request.user.profile.block.remove(profile_object)
+        return redirect("index")
 

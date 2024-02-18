@@ -40,6 +40,18 @@
                                     <label>Bio</label>
                                     <p>{{data.bio}}</p>
                                 </div>
+                                {%if request.user != data.user%}
+                                    <div class="media">
+                                        <form action="{%url 'block' data.id%}" method="post">
+                                            {%csrf_token%}
+                                            {%if data in request.user.profile.block.all%}
+                                                <button name="action" value="unblock">UnBlock</button>
+                                            {%else%}
+                                                <button name="action" value="block">Block</button>
+                                            {%endif%}
+                                        </form>
+                                    </div>
+                                {%endif%}   
                             </div>
                         </div>
                     </div>
@@ -70,8 +82,8 @@
                     </div>
                     <div class="col-6 col-lg-3">
                         <div class="count-data text-center">
-                            <h6 class="count h2" data-to="850" data-speed="850">{{data.block.count}}</h6>
-                            <p class="m-0px font-w-600">Blocked</p>
+                            <h6 class="count h2" data-to="850" data-speed="850">{{data.block.all.count}}</h6>
+                            <p class="m-0px font-w-600">{{data.block.all.count}} Blocked</p>
                         </div>
                     </div>
                     <div class="col-6 col-lg-3">
