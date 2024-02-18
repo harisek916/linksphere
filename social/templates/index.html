@@ -39,7 +39,12 @@
             </div>
         <!-- search end -->
 
-            <a href="post_form.html"><i class="fa-regular fa-square-plus me-4 fs-3 text-white opacity-75"></i></a>
+            <!-- modal -->
+                <button class="btn " data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-regular fa-square-plus me-4 fs-3 text-white opacity-75"></i>
+                </button>
+
+            <!-- endmodal -->
 
         <!-- profile dropdown start -->
 
@@ -73,6 +78,39 @@
 
     </nav>
     <!-- nav ends -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Post Your Story</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+           <form action="{%url 'story-create' %}" method="post" enctype="multipart/form-data">
+
+            {%csrf_token%}
+
+            <div class="modal-body">
+                
+                <div class="mb-3">
+                    <label for="">title</label>
+                    <input type="text" class="form-control" name="title">
+                </div>
+                <div class="mb-3">
+                    <input type="file" class="form-control" name="post_image" accept="image/*">
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">post</button>
+              </div>
+
+           </form>
+          </div>
+        </div>
+      </div>
+     
 
     {%if form.errors%}
         {{form.errors}}

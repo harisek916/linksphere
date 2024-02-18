@@ -3,7 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
-from django.utils import timezone
+from django.utils import timezone 
 from django.db.models.signals import post_save
 
 # Create your models here.
@@ -51,9 +51,12 @@ class Stories(models.Model):
     # exp=created_date + timezone.timedelta(days=1)
     expiry_date=models.DateTimeField()
 
-
     def __str__(self):
         return self.title 
+    
+    def save(self,*args,**kwargs):
+        self.expiry_date=timezone.now()+timezone.timedelta(days=1)
+        super().save(*args,**kwargs)
     
 
 def create_profile(sender,created,instance,**kwargs):

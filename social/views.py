@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.views.generic import View
 from django.views.generic import FormView,CreateView,TemplateView,UpdateView,DetailView,ListView
 # import from social app
-from social.forms import RegistrationForm,LoginForm,UserProfileForm,PostForm,CommentForm
+from social.forms import RegistrationForm,LoginForm,UserProfileForm,PostForm,CommentForm,StoryForm
 from social.models import UserProfile,Posts
 
 # Create your views here.
@@ -59,7 +59,8 @@ class IndexView(CreateView,ListView):
     
     def get_queryset(self):
         blocked_profiles=self.request.user.profile.block.all()
-        qs=Posts.objects.all().exclude(user__id__in=blocked_profiles).order_by("-created_date")
+        blockedprofile_id=[pr.user.id for pr in blocked_profiles]
+        qs=Posts.objects.all().exclude(user__id__in=blockedprofile_id).order_by("-created_date")
         return qs
 
 class SignOutView(View):
@@ -143,4 +144,18 @@ class ProfileBlockView(View):
         elif action == "unblock":
             request.user.profile.block.remove(profile_object)
         return redirect("index")
+
+
+class StorieCreateView(View):
+    
+    def post(self,request,*args,**kwargs):
+
+        form=StoryForm(request.POST,files=request.FILES)
+        if form.is_valid():
+            form.instance.user=request.user
+            form.save()
+            return redirect("index")
+        return redirect("index")
+
+
 
