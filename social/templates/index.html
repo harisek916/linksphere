@@ -79,6 +79,8 @@
     </nav>
     <!-- nav ends -->
 
+    <!-- story modal -->
+
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -110,8 +112,27 @@
           </div>
         </div>
       </div>
-     
+      <!-- story modal end -->
 
+      <!-- story display  -->
+      <div class="d-flex  container w-50 mt-3">
+        {%for st in stories%}
+        <div class="d-flex flex-column mt-5">
+            <article class="border rounded-circle bg-danger text-white  me-2 d-flex align-items-center justify-content-center mt-2" style="height: 100px;width: 100px; ">
+               
+               
+                <img src="{{st.post_image.url}}" alt=""  style="width: 100px; height: 100px;" class="border rounded-circle">
+                
+               
+            </article>
+            <div class="text-center fw-bolder">{{st.user}}</div>
+        </div>
+        {%endfor%}
+    </div>
+
+    <!-- story display end -->
+    {{stories}}
+     
     {%if form.errors%}
         {{form.errors}}
     {%endif%}
@@ -135,8 +156,6 @@
                     <input class="load" name="post_image" type="file" id="file" accept="image/*">
                     <label class="upload d-flex justify-content-center align-items-center" style="width: 60px;" for="file"><img src="{%static 'social/images/upload.png'%}" style="width: 30px;" alt=""></label>
                 </div>                    
-                <!-- <img class="profile-small ms-3 me-3" src="{%static 'social/images/profilepic.png'%}" alt=""> -->
-
                 <div class="">
                     <input class="form-control rounded-pill" type="text" name="title" id="" placeholder="captions...">
                 </div>
@@ -145,6 +164,13 @@
                 </div>
             </div>
         </form>
+
+        <!-- stories -->
+        
+
+
+
+        <!-- stories end -->
 
         <!-- post section start -->
         {%for post in data%}

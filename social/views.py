@@ -1,12 +1,13 @@
 # import from django
 from django.shortcuts import render,redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.contrib.auth import authenticate,login,logout
 from django.views.generic import View
 from django.views.generic import FormView,CreateView,TemplateView,UpdateView,DetailView,ListView
 # import from social app
 from social.forms import RegistrationForm,LoginForm,UserProfileForm,PostForm,CommentForm,StoryForm
-from social.models import UserProfile,Posts
+from social.models import UserProfile,Posts,Stories
 
 # Create your views here.
 
@@ -38,10 +39,8 @@ class SignInView(FormView):
             user_object=authenticate(request,username=uname,password=pwd)
             if user_object:
                 login(request,user_object)
-                print("logged in successfully......")
                 return redirect("index")
             
-        print("error in login")
         return render(request,"login.html",{"form":form})
 
 class IndexView(CreateView,ListView):
@@ -62,6 +61,12 @@ class IndexView(CreateView,ListView):
         blockedprofile_id=[pr.user.id for pr in blocked_profiles]
         qs=Posts.objects.all().exclude(user__id__in=blockedprofile_id).order_by("-created_date")
         return qs
+    
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        current_date=timezone.now()
+        context["stories"]=Stories.objects.filter(expiry_date__gte=current_date)
+        return context
 
 class SignOutView(View):
     def get(self,request,*args,**kwargs):
@@ -156,6 +161,13 @@ class StorieCreateView(View):
             form.save()
             return redirect("index")
         return redirect("index")
+
+
+# localhost:8000/story/<int:pk>
+
+class StoryDetailView(DetailView):
+    template_name="story_detail.html"
+    model=Stories
 
 
 
