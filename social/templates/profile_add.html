@@ -22,7 +22,7 @@ background: linear-gradient(to right, #FF4B2B, #FF416C);">
                 <!-- ============Profile pic change start -->
                 <label for="fileToUpload">
                     <div class=" p-3">
-                        {%if form.profile_pic%}
+                        {%if request.user.profile.profile_pic%}
                           
                             <img class="profile-small profile-pic shadow" src="{{form.profile_pic.value.url}}" alt="Avatar" style="border-radius: 50%;
                             background-color: rgb(68, 68, 68);">
@@ -37,7 +37,7 @@ background: linear-gradient(to right, #FF4B2B, #FF416C);">
                 </label>
                 <!-- ============Profile pic change end -->
                 <div class="text-white tefw-bold">
-                    Username
+                    {{request.user}}
                 </div>
             </div>
 
