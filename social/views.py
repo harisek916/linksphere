@@ -111,12 +111,13 @@ class FollowView(View):
     def post(self,request,*args,**kwargs):
         id=kwargs.get("pk")
         profile_object=UserProfile.objects.get(id=id)
+        print(profile_object)
         action=request.POST.get("action")
         if action == "follow":
             request.user.profile.following.add(profile_object)
         elif action == "unfollow":
             request.user.profile.following.remove(profile_object)
-        return redirect("index")
+        return redirect("profile-list")
 
 # localhost:8000/posts/<int:pk>/like
     
